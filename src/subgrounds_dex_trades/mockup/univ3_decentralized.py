@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-sg = Subgrounds.from_pg_key(os.getenv("PG_API_KEY"))
+sg = Subgrounds.from_pg_key(os.getenv("PLAYGROUNDS_API_KEY"))
 deployment_id = "QmcPHxcC2ZN7m79XfYZ77YmF4t9UCErv87a9NFKrSLWKtJ"
 
 subgraph = sg.load_subgraph(
@@ -14,7 +14,7 @@ subgraph = sg.load_subgraph(
     f"https://api.playgrounds.network/v1/proxy/deployments/id/{deployment_id}"
 )
 
-swaps_query = subgraph.Query.swaps(first=10)
+swaps_query = subgraph.Query.swaps(first=2500)
 df = sg.query_df(
     [
         # - swaps_ hash, timestamp, to, from, blockNumber, tokenIn_id, amountIn, tokenOut_id, amountOut, amountInUSD, amountOutUSD, pool_id

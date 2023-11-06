@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-sg = Subgrounds.from_pg_key(os.getenv("PG_API_KEY"))
+sg = Subgrounds.from_pg_key(os.getenv("PLAYGROUNDS_API_KEY"))
 deployment_id = "QmSvVWWgni9dVDxFDySDuDFC7jH8PdBy3guKc7x9rRgGXv"
 
 subgraph = sg.load_subgraph(
