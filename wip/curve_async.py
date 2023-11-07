@@ -16,7 +16,7 @@ date_ranges = [
     ]
 ]
 
-protocol_name = "UniswapV3"
+protocol_name = "Curve"
 
 # Create a data folder if it doesn't exist
 if not os.path.exists(f"data/{protocol_name}"):
@@ -26,7 +26,7 @@ if not os.path.exists(f"data/{protocol_name}"):
 async def run_query(date_range: list):
     async with AsyncSubgrounds() as sg:
         sg = AsyncSubgrounds.from_pg_key(os.getenv("PLAYGROUNDS_API_KEY"))
-        deployment_id: str = "QmZBbTLGEGNjep6X9KUXZWvRvZpybpcZH7zVVhtq9Un2fw"
+        deployment_id = "QmSGDNPW2iAwwgh4He5eeBTaSLeTJpWKzuNfP2McAdBVq1"
 
         subgraph = await sg.load_subgraph(
             # https://thegraph.com/explorer/subgraphs/3fy93eAT56UJsRCEht8iFhfi6wjHWXtZ9dnnbQmvFopF?view=Overview&chain=arbitrum-one
@@ -48,7 +48,8 @@ async def run_query(date_range: list):
             [
                 swaps_qp.hash,
                 swaps_qp.timestamp,
-                swaps_qp.account._select("id"),
+                swaps_qp.to,
+                swaps_qp._select("from"),
                 swaps_qp.blockNumber,
                 swaps_qp.tokenIn._select("id"),
                 swaps_qp.tokenIn._select("symbol"),
@@ -61,10 +62,7 @@ async def run_query(date_range: list):
                 swaps_qp.pool._select("id"),
             ]
         )
-
-        df.insert(3, "from", None)
         df.insert(0, "protocol", protocol_name)
-        df.rename(columns={"swaps_account_id": "to"}, inplace=True)
 
         # Save the DataFrame to a CSV file
         filename = f"data/{protocol_name}/swaps_{start_date.date()}.csv"
