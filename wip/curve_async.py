@@ -66,7 +66,10 @@ async def run_query(date_range: list):
 
         # Save the DataFrame to a CSV file
         filename = f"data/{protocol_name}/swaps_{start_date.date()}.csv"
-        df.to_csv(filename, index=False)
+        df.to_csv(filename)
+
+        print(df.shape)
+        print(df.columns)
 
         t1 = time.perf_counter()
         print(
